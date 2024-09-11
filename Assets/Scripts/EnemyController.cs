@@ -6,7 +6,20 @@ public class EnemyMovement : MonoBehaviour
 {
     public Transform player; // Referenz auf den Spieler
     public float moveSpeed = 3f; // Geschwindigkeit des Gegners
+    private Vector3 startPosition; // Die Startposition des Gegners
 
+    void Start()
+    {
+        // Speichere die Startposition des Gegners
+        startPosition = transform.position;
+    }
+
+    public void ResetEnemy()
+    {
+        // Setze den Gegner auf seine Startposition zurück
+        transform.position = startPosition;
+        // Hier kannst du weitere Eigenschaften zurücksetzen (z.B. Gesundheit, Animationen)
+    }
     // Update is called once per frame
     void Update()
     {
