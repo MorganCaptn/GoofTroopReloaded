@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public BlockManager[] blocks; // Array aller Block-Manager
     public CameraController cameraController; // Referenz zum CameraController
     private BlockManager currentBlock; // Der aktuell aktive Block
-
+    private Vector3 nextPlayerSpawnPos; //
     // Methode, um den aktuellen Block zu setzen
     public void SetCurrentBlock(int blockID)
     {
@@ -31,7 +31,20 @@ public class GameManager : MonoBehaviour
         // Bewege die Kamera zum neuen Block
         if (cameraController != null)
         {
-            cameraController.MoveToBlock(blockID);
+            Vector3 newCamPosition = currentBlock.transform.position;
+
+            newCamPosition.z = cameraController.transform.position.z;
+            Debug.Log(nextPlayerSpawnPos);
+            Debug.Log(newCamPosition);
+            cameraController.MoveToBlock(newCamPosition, nextPlayerSpawnPos);
         }
     }
+
+    public void SetPlayerSpawnPositionForNextBlock(Vector3 nextSpawnPos)
+    {
+
+        nextPlayerSpawnPos = nextSpawnPos;
+        
+    }
+  
 }

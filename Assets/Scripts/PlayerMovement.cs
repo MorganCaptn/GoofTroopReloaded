@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f; // Geschwindigkeit des Spielers
     private Rigidbody2D rb2D;
     private GameObject carriedObject; // Aktuell getragenes Objekt
-                                      
+    public bool movementDisabled = false;    
     public float throwForce = 15f; // Wurfeigenschaften anpassen
     void Start()
     {
@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (movementDisabled)
+            {
+            return;      
+            }
         // Eingaben erfassen
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -69,6 +73,10 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (movementDisabled)
+        {
+            return;
+        }
         // Eingaben erneut erfassen, um die Bewegung in FixedUpdate zu verarbeiten
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
