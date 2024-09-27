@@ -6,12 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f; // Geschwindigkeit des Spielers
     private Rigidbody2D rb2D;
+    private Animator animator; // Referenz zum Animator
     private GameObject carriedObject; // Aktuell getragenes Objekt
     public bool movementDisabled = false;    
     public float throwForce = 15f; // Wurfeigenschaften anpassen
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>(); // Zugriff auf das Rigidbody2D-Komponente
+        animator = GetComponent<Animator>(); // Zugriff auf den Animator
     }
 
     void Update()
@@ -26,36 +28,45 @@ public class PlayerMovement : MonoBehaviour
 
         // Bewegung berechnen (aber noch nicht anwenden)
         Vector2 movement = new Vector2(horizontal, vertical) * moveSpeed * Time.deltaTime;
+        // Animator-Parameter setzen
+        Debug.Log(vertical);
+        animator.SetFloat("MoveX", horizontal);
+        animator.SetFloat("MoveY", vertical);
+        animator.SetBool("IsMoving", horizontal != 0 || vertical != 0); // Setzt, ob der Spieler sich bewegt
 
-        // Überprüfung, ob der Spieler sich bewegt
-        if (horizontal != 0 || vertical != 0)
-        {
-            // Bestimmen der dominanten Eingabeachse
-            if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
-            {
-                // Spieler nach links oder rechts drehen
-                if (horizontal > 0)
-                {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90f)); // Rechts
-                }
-                else
-                {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90f)); // Links
-                }
-            }
-            else
-            {
-                // Spieler nach oben oder unten drehen
-                if (vertical > 0)
-                {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0f)); // Oben
-                }
-                else
-                {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f)); // Unten
-                }
-            }
-        }
+
+        /*
+       // Überprüfung, ob der Spieler sich bewegt
+       if (horizontal != 0 || vertical != 0)
+       {
+           // Bestimmen der dominanten Eingabeachse
+           if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
+           {
+
+               // Spieler nach links oder rechts drehen
+               if (horizontal > 0)
+               {
+                   transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90f)); // Rechts
+               }
+               else
+               {
+                   transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90f)); // Links
+               }
+           }
+           else
+           {
+               // Spieler nach oben oder unten drehen
+               if (vertical > 0)
+               {
+                   transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0f)); // Oben
+               }
+               else
+               {
+                   transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f)); // Unten
+               }
+           }
+       }
+               */
         // Aufheben von Objekten
         if (Input.GetKeyDown(KeyCode.Space))
         {

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8493014463882433125}
   - component: {fileID: 8004981898556848462}
   - component: {fileID: 8995371277449575361}
-  - component: {fileID: 4262082185641269449}
+  - component: {fileID: 5312260485200729777}
   - component: {fileID: 5042291342361429519}
   m_Layer: 0
   m_Name: Player (1)
@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  movementDisabled: 0
+  throwForce: 15
 --- !u!50 &8004981898556848462
 Rigidbody2D:
   serializedVersion: 4
@@ -141,8 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9827af33d4aceb741a01f1a8fe6e89be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!60 &4262082185641269449
-PolygonCollider2D:
+--- !u!61 &5312260485200729777
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -170,7 +172,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -183,12 +185,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
-  m_UseDelaunayMesh: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &5042291342361429519
 MonoBehaviour:
   m_ObjectHideFlags: 0

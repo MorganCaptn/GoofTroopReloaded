@@ -44,3 +44,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1352699599
+    locked: 0
+  - name: Decoration
+    uniqueID: 113698047
+    locked: 0
+  - name: InteractiveObjects
+    uniqueID: 1843703081
+    locked: 0
+  - name: Particles/Sky
+    uniqueID: 1165626787
+    locked: 0
+  - name: UI
+    uniqueID: 2718669
+    locked: 0

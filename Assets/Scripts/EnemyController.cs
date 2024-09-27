@@ -36,6 +36,8 @@ public class EnemyMovement : MonoBehaviour
             // Anwendung der Bewegung auf den Gegner im Weltkoordinatensystem
             transform.Translate(movement, Space.World);
 
+            //Disable rotation
+            /*
             // Überprüfung der dominanten Bewegungsachse
             if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             {
@@ -61,6 +63,7 @@ public class EnemyMovement : MonoBehaviour
                     transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f)); // Unten
                 }
             }
+            */
         }
     }
 
