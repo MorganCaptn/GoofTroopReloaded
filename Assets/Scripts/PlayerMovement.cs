@@ -10,10 +10,12 @@ public class PlayerMovement : MonoBehaviour
     private GameObject carriedObject; // Aktuell getragenes Objekt
     public bool movementDisabled = false;    
     public float throwForce = 15f; // Wurfeigenschaften anpassen
+    private Vector2 movementInput; // Für Bewegung und Wurfrichtung
+    public Transform visualChild; // Reference to the visual child object
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>(); // Zugriff auf das Rigidbody2D-Komponente
-        animator = GetComponent<Animator>(); // Zugriff auf den Animator
+        animator = visualChild.GetComponent<Animator>(); // Zugriff auf den Animator
     }
 
     void Update()
@@ -26,16 +28,32 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+        // Bewegungseingaben speichern
+        movementInput = new Vector2(horizontal, vertical).normalized;
+        // Bestimme, welche Achse dominiert
+        bool horizontalDominates = Mathf.Abs(horizontal) > Mathf.Abs(vertical);
+
+        // Setze Animator-Parameter basierend auf der dominanten Achse
+        if (horizontalDominates)
+        {
+            animator.SetFloat("MoveX", horizontal);
+            animator.SetFloat("MoveY", 0);  // Setze Y auf 0, um keine diagonalen Bewegungen darzustellen
+        }
+        else
+        {
+            animator.SetFloat("MoveX", 0);  // Setze X auf 0
+            animator.SetFloat("MoveY", vertical);
+        }
         // Bewegung berechnen (aber noch nicht anwenden)
         Vector2 movement = new Vector2(horizontal, vertical) * moveSpeed * Time.deltaTime;
         // Animator-Parameter setzen
-        Debug.Log(vertical);
-        animator.SetFloat("MoveX", horizontal);
-        animator.SetFloat("MoveY", vertical);
+
+        //animator.SetFloat("MoveX", horizontal);
+        //animator.SetFloat("MoveY", vertical);
         animator.SetBool("IsMoving", horizontal != 0 || vertical != 0); // Setzt, ob der Spieler sich bewegt
 
 
-        /*
+  
        // Überprüfung, ob der Spieler sich bewegt
        if (horizontal != 0 || vertical != 0)
        {
@@ -65,8 +83,12 @@ public class PlayerMovement : MonoBehaviour
                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f)); // Unten
                }
            }
-       }
-               */
+
+           //freeze rotation for sprite animation
+            visualChild.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+           
+        }
+             
         // Aufheben von Objekten
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -89,11 +111,11 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         // Eingaben erneut erfassen, um die Bewegung in FixedUpdate zu verarbeiten
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        //float horizontal = Input.GetAxis("Horizontal");
+        //float vertical = Input.GetAxis("Vertical");
 
         // Berechnung der neuen Position basierend auf der Eingabe und Geschwindigkeit
-        Vector2 movement = new Vector2(horizontal, vertical) * moveSpeed * Time.fixedDeltaTime;
+        Vector2 movement = movementInput * moveSpeed * Time.fixedDeltaTime;
 
         // Anwendung der Bewegung auf den Spieler über Rigidbody2D
         rb2D.MovePosition(rb2D.position + movement);
@@ -135,6 +157,8 @@ public class PlayerMovement : MonoBehaviour
 
             // Bestimme die Wurfrichtung basierend auf der aktuellen Blickrichtung des Spielers
             Vector2 throwDirection = Vector2.zero;
+            
+          
             if (transform.rotation == Quaternion.Euler(0, 0, 0))
             {
                 throwDirection = Vector2.up;
@@ -151,11 +175,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 throwDirection = Vector2.right;
             }
+            // **Fixiere die Rotation des Child-Objekts**
+            visualChild.rotation = Quaternion.identity; // Verhindert die Rotation des visualChilds
+        
 
-            
 
-            // Rufe die Methode zum Werfen auf
-            ThrowableObject throwable = carriedObject.GetComponent<ThrowableObject>();
+        // Rufe die Methode zum Werfen auf
+        ThrowableObject throwable = carriedObject.GetComponent<ThrowableObject>();
             throwable.ThrowObject(throwDirection, throwForce);
         }
     }
