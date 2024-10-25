@@ -12,18 +12,14 @@ public class CameraController : MonoBehaviour
         targetPosition = transform.position;
     }
 
-    public void MoveToBlock(Vector3 newCamPosition, Vector3 newPlayerPosition)
+    public void MoveToBlock(Vector3 newCamPosition, Vector3 nextPlayerSpawnPos)
     {
 
-        // Starte den Fade und bewege die Kamera nach dem Fade-Out
-        player.GetComponent<PlayerMovement>().movementDisabled = true;
         fadeManager.FadeOutAndIn(() =>
         {
-
             transform.position = newCamPosition;
-            
-            player.transform.position = newPlayerPosition;
+            player.transform.position = nextPlayerSpawnPos;
         });
-        player.GetComponent<PlayerMovement>().movementDisabled = false;
+
     }
 }

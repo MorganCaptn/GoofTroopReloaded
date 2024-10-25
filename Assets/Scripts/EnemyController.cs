@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform player; // Referenz auf den Spieler
     public float moveSpeed = 3f; // Geschwindigkeit des Gegners
     private Vector3 startPosition; // Die Startposition des Gegners
+    public bool movementDisabled = false;
 
     void Start()
     {
@@ -32,6 +33,10 @@ public class EnemyMovement : MonoBehaviour
 
             // Berechnung der Bewegung
             Vector2 movement = direction * moveSpeed * Time.deltaTime;
+            if (movementDisabled)
+            {
+                movement = new Vector2(0.0f, 0.0f);
+            }
 
             // Anwendung der Bewegung auf den Gegner im Weltkoordinatensystem
             transform.Translate(movement, Space.World);
@@ -65,6 +70,11 @@ public class EnemyMovement : MonoBehaviour
             }
             */
         }
+    }
+
+    public void ToggleMovement(bool activateMovement)
+    {
+        movementDisabled = activateMovement;
     }
 
     void OnCollisionEnter2D(Collision2D collision)

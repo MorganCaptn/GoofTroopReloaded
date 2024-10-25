@@ -20,10 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (movementDisabled)
-            {
-            return;      
-            }
+ 
         // Eingaben erfassen
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -106,19 +103,23 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        Vector2 movement = movementInput * moveSpeed * Time.fixedDeltaTime;
+     
+        // Berechnung der neuen Position basierend auf der Eingabe und Geschwindigkeit
         if (movementDisabled)
         {
-            return;
+             movement = new Vector2(0.0f, 0.0f);
         }
-        // Eingaben erneut erfassen, um die Bewegung in FixedUpdate zu verarbeiten
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
-        // Berechnung der neuen Position basierend auf der Eingabe und Geschwindigkeit
-        Vector2 movement = movementInput * moveSpeed * Time.fixedDeltaTime;
+     
+       
 
         // Anwendung der Bewegung auf den Spieler über Rigidbody2D
         rb2D.MovePosition(rb2D.position + movement);
+    }
+
+    public void ToggleMovement(bool activateMovement)
+    {
+        movementDisabled = activateMovement;
     }
 
     void TryPickUpObject()
