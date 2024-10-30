@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f; // Geschwindigkeit des Spielers
     private Rigidbody2D rb2D;
     private Animator animator; // Referenz zum Animator
-    private GameObject carriedObject; // Aktuell getragenes Objekt
+    public GameObject carriedObject; // Aktuell getragenes Objekt
     public bool movementDisabled = false;    
     public float throwForce = 15f; // Wurfeigenschaften anpassen
     private Vector2 movementInput; // Für Bewegung und Wurfrichtung
@@ -79,11 +79,20 @@ public class PlayerMovement : MonoBehaviour
                {
                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f)); // Unten
                }
-           }
+               
 
-           //freeze rotation for sprite animation
-            visualChild.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+            }
+
+            //freeze rotation for sprite animations
+            if (carriedObject != null)
+            {
+
+                carriedObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+            }
            
+            visualChild.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+            
+            
         }
              
         // Aufheben von Objekten
@@ -135,8 +144,12 @@ public class PlayerMovement : MonoBehaviour
                 // Fass an CarryPoint anhängen
                 carriedObject.transform.SetParent(transform.Find("CarryPoint"));
                 carriedObject.transform.localPosition = Vector3.zero;
-                carriedObject.transform.localRotation = Quaternion.identity; // Setze Rotation des Fasses auf neutral
+                //carriedObject.transform.localRotation = Quaternion.identity; // Setze Rotation des Fasses auf neutral
 
+                // Fixiere Rotation
+                //freeze rotation for sprite animation
+                //carriedObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+                //carriedObject.GetComponent<Rigidbody2D>().freezeRotation = true;
                 carriedObject.GetComponent<Rigidbody2D>().isKinematic = true;
                 carriedObject.GetComponent<CircleCollider2D>().isTrigger = false;
 
